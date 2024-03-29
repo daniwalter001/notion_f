@@ -1,9 +1,12 @@
+import { Toaster } from "react-hot-toast";
+import Notion from "./pages/Notion";
 
 function App() {
-   return (
-    <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
+  return (
+    <div className="border-2 flex flex-auto flex-col h-screen ">
+      <Notion />
+      <Toaster position="top-center" reverseOrder={false} />
+    </div>
   );
 }
 

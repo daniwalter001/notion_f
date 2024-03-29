@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { store } from "../redux/store";
 
 export const api = createApi({
   reducerPath: "api",
@@ -15,17 +14,46 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: [],
+  tagTypes: ["Task"],
   endpoints: (builder) => ({
-    login: builder.mutation({
+    getTask: builder.query({
+      query: (token) => `/task/${token}`,
+      providesTags: ["Task"],
+    }),
+    getAllTasks: builder.query({
+      query: () => `/task/all`,
+      providesTags: ["Task"],
+    }),
+    add: builder.mutation({
       query: (data) => ({
-        url: "",
-        body: "",
-        method: "",
+        url: "/task/add",
+        body: data,
+        method: "POST",
       }),
-      invalidatesTags: [],
+      invalidatesTags: ["Task"],
+    }),
+    updateTask: builder.mutation({
+      query: ({ token, data }) => ({
+        url: `/task/update/${token}`,
+        body: data,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["Task"],
+    }),
+    deleteTask: builder.mutation({
+      query: (token) => ({
+        url: `/task/delete/${token}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Task"],
     }),
   }),
 });
 
-export const { useLoginMutation } = api;
+export const {
+  useAddMutation,
+  useDeleteTaskMutation,
+  useGetAllTasksQuery,
+  useGetTaskQuery,
+  useUpdateTaskMutation,
+} = api;
